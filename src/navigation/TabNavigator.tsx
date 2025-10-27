@@ -1,81 +1,109 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import HomeScreen from '../screens/HomeScreen';
-import StoriesScreen from '../screens/StoriesScreen';
-import FavoritesScreen from '../screens/FavoritesScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+// Pantallas
+import { HomeScreen, StoriesScreen, CharactersScreen, SettingsScreen } from '../app';
+
+// Colores del tema
+import { colors } from '../styles/theme';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
+  const insets = useSafeAreaInsets();
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Inicio') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Stories') {
+          } else if (route.name === 'Historias') {
             iconName = focused ? 'book' : 'book-outline';
-          } else if (route.name === 'Favorites') {
-            iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'Personajes') {
+            iconName = focused ? 'people' : 'people-outline';
+          } else if (route.name === 'Configuración') {
+            iconName = focused ? 'settings' : 'settings-outline';
           } else {
-            iconName = 'help-circle';
+            iconName = 'help-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={24} color={color} />;
         },
-        tabBarActiveTintColor: '#4A90E2',
-        tabBarInactiveTintColor: '#7f8c8d',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: colors.white,
+          borderTopColor: colors.lightGray,
           borderTopWidth: 1,
-          borderTopColor: '#e0e0e0',
-          paddingTop: 5,
-          paddingBottom: 5,
-          height: 60,
+          height: Platform.OS === 'ios' ? 90 + insets.bottom : 70 + insets.bottom,
+          paddingBottom: Platform.OS === 'ios' ? 30 + insets.bottom : 15 + insets.bottom,
+          paddingTop: 15,
+          shadowColor: colors.black,
+          shadowOffset: {
+            width: 0,
+            height: -2,
+          },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 8,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
+          marginBottom: 2,
         },
-        headerShown: false,
+        tabBarIconStyle: {
+          marginTop: 4,
+        },
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerTintColor: colors.white,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 18,
+        },
       })}
     >
       <Tab.Screen 
-        name="Home" 
+        name="Inicio" 
         component={HomeScreen}
-        options={{
-          tabBarLabel: 'Inicio',
+        options={{ 
+          title: 'Historia Sagrada',
+          tabBarLabel: 'Inicio'
         }}
       />
       <Tab.Screen 
-        name="Stories" 
+        name="Historias" 
         component={StoriesScreen}
-        options={{
-          tabBarLabel: 'Historias',
+        options={{ 
+          title: 'Historias Bíblicas',
+          tabBarLabel: 'Historias'
         }}
       />
       <Tab.Screen 
-        name="Favorites" 
-        component={FavoritesScreen}
-        options={{
-          tabBarLabel: 'Favoritos',
+        name="Personajes" 
+        component={CharactersScreen}
+        options={{ 
+          title: 'Personajes',
+          tabBarLabel: 'Personajes'
         }}
       />
       <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Perfil',
+        name="Configuración" 
+        component={SettingsScreen}
+        options={{ 
+          title: 'Configuración',
+          tabBarLabel: 'Configuración'
         }}
       />
     </Tab.Navigator>
   );
 }
-
