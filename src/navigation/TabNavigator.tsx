@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Pantallas
@@ -39,37 +39,44 @@ export default function TabNavigator() {
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
           backgroundColor: colors.white,
-          borderTopColor: colors.lightGray,
-          borderTopWidth: 1,
+          borderTopColor: 'transparent',
+          borderTopWidth: 0,
           height: Platform.OS === 'ios' ? 90 + insets.bottom : 70 + insets.bottom,
           paddingBottom: Platform.OS === 'ios' ? 30 + insets.bottom : 15 + insets.bottom,
           paddingTop: 15,
-          shadowColor: colors.black,
-          shadowOffset: {
-            width: 0,
-            height: -2,
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 8,
+          shadowColor: 'transparent',
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0,
+          shadowRadius: 0,
+          elevation: 0,
         },
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 5,
           marginBottom: 2,
         },
         tabBarIconStyle: {
-          marginTop: 4,
+          marginTop: 0.5,
         },
         headerStyle: {
           backgroundColor: colors.primary,
+            // Quitar línea/sombra inferior en Android
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
         },
+        headerBackground: () => (
+          <View style={{ flex: 1, backgroundColor: colors.primary }} />
+        ),
+        headerTransparent: true,
         headerTintColor: colors.white,
         headerTitleStyle: {
           fontWeight: 'bold',
           fontSize: 18,
         },
+          // Quitar sombra/borde inferior del header (iOS/Android)
+          headerShadowVisible: false,
       })}
     >
       <Tab.Screen 
